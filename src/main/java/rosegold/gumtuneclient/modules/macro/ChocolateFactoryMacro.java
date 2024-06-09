@@ -81,29 +81,27 @@ public class ChocolateFactoryMacro
           isStrayRabbitPresent = true;
         }
         
-        if ( !displayName.contains( "Chocolate" ) && !displayName.contains( "Rabbit" ) )
-          continue;
-        
         if ( displayName.contains( "Chocolate" ) && !displayName.contains( "Rabbit" ) ) // The rabbit head containing chocolate factory info
         {
           String raw = displayName.replace( ",", "" );
           Matcher matcher = pattern.matcher( raw );
           if ( matcher.find( ) )
           {
-            int purse = Integer.parseInt( matcher.group( ) );
-            if ( purse == chocolatePurse )
-            {
-              currentInventory.clear( );
-              return;
-            }
-            chocolatePurse = purse;
+            chocolatePurse = Integer.parseInt( matcher.group( ) );
           }
         }
         
         if ( !displayName.contains( "Chocolate" ) && displayName.contains( "Rabbit" ) ) // Employees
         {
           String amountLore = StringUtils.removeFormatting( Objects.requireNonNull( InventoryUtils.getItemLore( stack, 4 ) ) ).replace( ",", "" );
-          String costLore = StringUtils.removeFormatting( Objects.requireNonNull( InventoryUtils.getItemLore( stack, 11 ) ) ).replace( ",", "" );
+          String costLore = StringUtils.removeFormatting(
+            Objects.requireNonNull( InventoryUtils.getItemLore( stack, 11 ) ) +
+              Objects.requireNonNull( InventoryUtils.getItemLore( stack, 12 ) )
+          ).replace( ",", "" );
+          
+          System.out.println( amountLore );
+          System.out.println( costLore );
+          
           Matcher amoutMatcher = pattern.matcher( amountLore );
           Matcher costMatcher = pattern.matcher( costLore );
           Matcher levelMatcher = pattern.matcher( displayName );
@@ -126,7 +124,7 @@ public class ChocolateFactoryMacro
       }
     }
     
-    if ( (bestRabbitCost != 0 && chocolatePurse > 0 && bestRabbitCost <= chocolatePurse) || isStrayRabbitPresent )
+    if ( ( bestRabbitCost != 0 && chocolatePurse > 0 && bestRabbitCost <= chocolatePurse ) || isStrayRabbitPresent )
     {
       Random rand = new Random( );
       int min = GumTuneClientConfig.chocolateFactoryMinimumMacroDelay;
@@ -146,9 +144,10 @@ public class ChocolateFactoryMacro
         rand.nextInt( ( max - min ) + 1 ) + min,
         TimeUnit.MILLISECONDS
       );
+      
+      clicked = false;
     }
     
-    clicked = false;
     isStrayRabbitPresent = false;
     bestRabbitCost = 0;
     currentInventory.clear( );
