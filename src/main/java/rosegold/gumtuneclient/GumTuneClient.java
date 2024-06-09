@@ -27,6 +27,7 @@ import rosegold.gumtuneclient.modules.farming.CropPlacer;
 import rosegold.gumtuneclient.modules.farming.PreventRenderingCrops;
 import rosegold.gumtuneclient.modules.farming.VisitorHelpers;
 import rosegold.gumtuneclient.modules.macro.AutoHarp;
+import rosegold.gumtuneclient.modules.macro.ChocolateFactoryMacro;
 import rosegold.gumtuneclient.modules.macro.GemstoneMacro;
 import rosegold.gumtuneclient.modules.macro.MobMacro;
 import rosegold.gumtuneclient.modules.mining.GemstoneSackCompactor;
@@ -106,7 +107,8 @@ public class GumTuneClient {
                 new MirrorverseHelpers(),
                 new CustomBlockESP(),
                 new AntiScribe(),
-                new GemstoneSackCompactor()
+                new GemstoneSackCompactor(),
+                new ChocolateFactoryMacro( )
         );
     }
 
