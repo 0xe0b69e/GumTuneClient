@@ -45,6 +45,7 @@ public class GumTuneClientConfig extends Config {
     // Modules
     private transient static final String CROP_PLACER = "Crop Placer";
     private transient static final String HARP_MACRO = "Harp Macro";
+    private transient static final String CHOCOLATE_FACTORY_MACRO = "Chocolate Factory Macro";
     private transient static final String POWDER_CHEST_SOLVER = "Powder Chest Solver";
     private transient static final String NUKER = "Nuker";
     private transient static final String TRACKERS = "Trackers";
@@ -163,6 +164,14 @@ public class GumTuneClientConfig extends Config {
             min = 0, max = 1000
     )
     public static int harpMacroDelay = 10;
+    
+    @Switch(
+            name = "Enabled",
+            category = MACRO,
+            subcategory = CHOCOLATE_FACTORY_MACRO,
+            size = 2
+    )
+    public static boolean chocolateFactoryMacro = false;
 
     @Info(
             text = "Remember to toggle both Nuker and it's keybind!",
