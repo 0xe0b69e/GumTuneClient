@@ -121,18 +121,17 @@ public class ChocolateFactoryMacro
       }
     }
     
-    if ( bestRabbitCost <= chocolatePurse )
+    if ( bestRabbitCost != 0 && chocolatePurse > 0 && bestRabbitCost <= chocolatePurse )
     {
       Random rand = new Random( );
       int min = GumTuneClientConfig.chocolateFactoryMinimumMacroDelay;
       int max = GumTuneClientConfig.chocolateFactoryMaximumMacroDelay;
       Multithreading.schedule(
         ( ) -> {
-          Slot slot = mc.thePlayer.openContainer.inventorySlots.get( bestRabbitSlot );
-          ModUtils.sendMessage( "clicked slot " + ( slot.slotNumber ) );
+          ModUtils.sendMessage( "clicked slot " + bestRabbitSlot );
           mc.playerController.windowClick(
             GumTuneClient.mc.thePlayer.openContainer.windowId,
-            slot.slotNumber,
+            bestRabbitSlot,
             2,
             3,
             mc.thePlayer
