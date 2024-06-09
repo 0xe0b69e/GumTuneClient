@@ -172,6 +172,24 @@ public class GumTuneClientConfig extends Config {
             size = 2
     )
     public static boolean chocolateFactoryMacro = false;
+    
+    @Slider(
+            name = "Min Click delay (ms)",
+            description = "Minimum time it will take for the macro to click",
+            category = MACRO,
+            subcategory = CHOCOLATE_FACTORY_MACRO,
+            min = 0, max = 1000
+    )
+    public static int chocolateFactoryMinimumMacroDelay = 10;
+    
+    @Slider(
+      name = "Max Click delay (ms)",
+      description = "Maximum time it will take for the macro to click",
+      category = MACRO,
+      subcategory = CHOCOLATE_FACTORY_MACRO,
+      min = 0, max = 1000
+    )
+    public static int chocolateFactoryMaximumMacroDelay = 10;
 
     @Info(
             text = "Remember to toggle both Nuker and it's keybind!",
