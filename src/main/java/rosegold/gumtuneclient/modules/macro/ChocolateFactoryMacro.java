@@ -4,8 +4,6 @@ import cc.polyfrost.oneconfig.utils.Multithreading;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -35,7 +33,8 @@ public class ChocolateFactoryMacro
   
   private int chocolatePurse;
   private int bestRabbitCost = 0;
-  private int bestRabbitSlot = 0;
+  private int slot = 0;
+  private boolean isStrayRabbitPresent = false;
   
   @SubscribeEvent
   public final void onGuiOpen ( @NotNull GuiOpenEvent event )
@@ -76,6 +75,12 @@ public class ChocolateFactoryMacro
         
         String displayName = StringUtils.removeFormatting( stack.getDisplayName( ) );
         
+        if ( displayName.toLowerCase( ).contains( "click me" ) )
+        {
+          slot = i;
+          isStrayRabbitPresent = true;
+        }
+        
         if ( !displayName.contains( "Chocolate" ) && !displayName.contains( "Rabbit" ) )
           continue;
         
@@ -111,27 +116,27 @@ public class ChocolateFactoryMacro
             int amountPerLevel = amount / level;
             float costPer = ( float ) cost / amountPerLevel;
             
-            if ( bestRabbitCost == 0 || costPer < bestRabbitCost )
+            if ( ( bestRabbitCost == 0 || costPer < bestRabbitCost ) && !isStrayRabbitPresent )
             {
               bestRabbitCost = ( int ) costPer;
-              bestRabbitSlot = i;
+              slot = i;
             }
           }
         }
       }
     }
     
-    if ( bestRabbitCost != 0 && chocolatePurse > 0 && bestRabbitCost <= chocolatePurse )
+    if ( (bestRabbitCost != 0 && chocolatePurse > 0 && bestRabbitCost <= chocolatePurse) || isStrayRabbitPresent )
     {
       Random rand = new Random( );
       int min = GumTuneClientConfig.chocolateFactoryMinimumMacroDelay;
       int max = GumTuneClientConfig.chocolateFactoryMaximumMacroDelay;
       Multithreading.schedule(
         ( ) -> {
-          ModUtils.sendMessage( "clicked slot " + bestRabbitSlot );
+          ModUtils.sendMessage( "clicked slot " + slot );
           mc.playerController.windowClick(
             GumTuneClient.mc.thePlayer.openContainer.windowId,
-            bestRabbitSlot,
+            slot,
             2,
             3,
             mc.thePlayer
@@ -144,6 +149,7 @@ public class ChocolateFactoryMacro
     }
     
     clicked = false;
+    isStrayRabbitPresent = false;
     bestRabbitCost = 0;
     currentInventory.clear( );
   }
